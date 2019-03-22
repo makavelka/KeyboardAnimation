@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="content_money">Деньги</string>
+    <string name="content_postcard">Открытка</string>
+    <string name="content_gift">Подарок</string>
+    <string name="content_book">Книга</string>
+    <string name="content_sticker">Стикер</string>
+    <string name="content_camera">Камера</string>
+    <string name="content_gallery">Галерея</string>
+    <string name="content_file">Файл</string>
+</resources>

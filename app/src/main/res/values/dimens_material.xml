@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Отступы по спецификации -->
+    <dimen name="padding_xsmall">8dp</dimen>
+    <dimen name="padding_medium_small">12dp</dimen>
+    <dimen name="padding_medium">16dp</dimen>
+
+    <dimen name="margin_xxxsmall">4dp</dimen>
+    <dimen name="margin_xmedium_small">14dp</dimen>
+    <dimen name="margin_medium">16dp</dimen>
+
+    <!-- Подъем элементов -->
+
+    <!-- Размеры текста по спецификации -->
+
+    <!-- Размеры ячеек списка -->
+
+    <!-- Прочее -->
+    <dimen name="button_min_height">40dp</dimen>
+    <!-- Костыль: необходимо выставлять layout_marginBottom текстовым полям с отличным от EditText размером шрифта,
+     которые должны быть выровнены по EditText-у. Пример - SumInputLayout-->
+    <!--currency can consists of 3characters(3*20sp) + padding(20sp)-->
+
+    <!-- Progress bar -->
+
+    <!-- Divider -->
+
+    <!-- Dotted Line -->
+
+    <!-- Button -->
+
+    <!-- Chips -->
+
+    <!-- Match parent -->
+
+</resources>

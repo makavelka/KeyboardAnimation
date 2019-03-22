@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="user_can_send_message_layout_height">64dp</dimen>
+
+
+    <!--BERU-->
+
+    <dimen name="messenger_content_item_size">64dp</dimen>
+    <dimen name="messenger_content_image_size">32dp</dimen>
+
+    <!-- EditText -->
+    <dimen name="message_edit_text_radius">10dp</dimen>
+
+</resources>

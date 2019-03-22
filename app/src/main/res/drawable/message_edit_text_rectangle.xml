@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/color_bubble_output_common"/>
+    <corners
+        android:bottomLeftRadius="@dimen/message_edit_text_radius"
+        android:bottomRightRadius="@dimen/message_edit_text_radius"
+        android:topLeftRadius="@dimen/message_edit_text_radius"
+        android:topRightRadius="@dimen/message_edit_text_radius"/>
+</shape>
