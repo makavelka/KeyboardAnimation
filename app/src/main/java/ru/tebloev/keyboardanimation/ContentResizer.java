@@ -3,17 +3,15 @@ package ru.tebloev.keyboardanimation;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
-import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.OvershootInterpolator;
+import android.view.animation.LinearInterpolator;
 
 /**
  * @author Tebloev Vladimir
  */
 public class ContentResizer {
 
-    private ValueAnimator mHeightAnimator = new ObjectAnimator();
+    private ValueAnimator mGlobalLayoutHeightAnimator = new ObjectAnimator();
 
     public void listen(Activity activity) {
         ActivityViewHolder holder = ActivityViewHolder.Companion.createFrom(activity);
@@ -32,12 +30,12 @@ public class ContentResizer {
     }
 
     private void runAnimator(ViewGroup v, KeyboardVisibilityEvent event) {
-        mHeightAnimator.cancel();
-        mHeightAnimator = ObjectAnimator.ofInt(event.getContentHeightBeforeResize(), event.getContentHeight());
-        mHeightAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
-        mHeightAnimator.setDuration(1500);
-        mHeightAnimator.addUpdateListener(animation -> setHeight((int) animation.getAnimatedValue(), v));
-        mHeightAnimator.start();
+        mGlobalLayoutHeightAnimator.cancel();
+        mGlobalLayoutHeightAnimator = ObjectAnimator.ofInt(event.getContentHeightBeforeResize(), event.getContentHeight());
+        mGlobalLayoutHeightAnimator.setInterpolator(new LinearInterpolator());
+        mGlobalLayoutHeightAnimator.setDuration(100);
+        mGlobalLayoutHeightAnimator.addUpdateListener(animation -> setHeight((int) animation.getAnimatedValue(), v));
+        mGlobalLayoutHeightAnimator.start();
     }
 
     private void setHeight(int height, ViewGroup viewGroup) {

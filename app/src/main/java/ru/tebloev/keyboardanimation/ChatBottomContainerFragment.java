@@ -7,11 +7,12 @@ import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.motion.MotionLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 
 /**
  * Фрагмент, служащий контейнером для всей нижней части в чате
@@ -21,31 +22,15 @@ import android.view.ViewTreeObserver;
 public class ChatBottomContainerFragment extends Fragment implements ChatBottomView, ContentCloseListener,
         ContentOpenListener, TextFieldButtonListener {
 
-    public static final String CONVERSATION_ID_ARG = "conversation_id_arg";
-    public static final String PHONE_ARG = "phone_arg";
-
-    public static final String CONVERSATION_ID = "CONVERSATION_ID";
-    public static final String CONVERSATION_TYPE = "CONVERSATION_TYPE";
-    public static final String PHONE_NUMBER = "PHONE_NUMBER";
-    public static final String RECEIVER_ID = "RECEIVER_ID";
-    public static final String IS_FROM_ADDRESS_BOOK = "IS_FROM_ADDRESS_BOOK";
     public static final String IS_MESSENGER_CLIENT = "IS_MESSENGER_CLIENT";
-    public static final String IS_ADMIN = "IS_ADMIN";
-    public static final String IS_SBER_CHAT_FILES_ENABLED = "IS_SBER_CHAT_FILES_ENABLED";
-    public static final String IS_FROM_DEEPLINK = "IS_FROM_DEEPLINK";
-    private static final String EMPTY_STRING = "";
-    private static final long UNDEFINED_CONVERSATION_ID = -1;
-    private static final int UNDEFINED_CONVERSATION_TYPE = -1;
-    private static final long UNDEFINED_RECEIVER_ID = -1;
 
     private View mPrimaryCategoriesContainer;
     private View mSecondaryCategoriesContainer;
     private ViewGroup mTextContainer;
     private ViewGroup mContentContainer;
-    private ViewGroup mCategoriesWithTextContainer;
+    private View mCategoriesWithTextContainer;
     private ViewGroup mCategoriesLayout;
     private ViewGroup mNotClientContainer;
-    private View mRoot;
     private Fragment mContentFragment;
 
     private AnimatorSet mAnimatorSet;
@@ -54,7 +39,9 @@ public class ChatBottomContainerFragment extends Fragment implements ChatBottomV
     private int mOriginalHeigth = 0;
 
     private boolean mIsMessengerClient;
+    private ContentCategoriesFragment mFragment1;
 
+    private ContentCategoriesFragment mFragment2;
 
     @Nullable
     @Override
@@ -121,14 +108,20 @@ public class ChatBottomContainerFragment extends Fragment implements ChatBottomV
 
     @Override
     public void openCategories() {
-        mCategoriesLayout.setVisibility(View.VISIBLE);
-//        initAnimatorSetOpen();
+        mCategoriesWithTextContainer.setVisibility(View.VISIBLE);
+        if (mOriginalHeigth > 0) {
+            initAnimatorSetOpen();
+        } else {
+            mCategoriesLayout.setVisibility(View.VISIBLE);
+        }
+        mContentContainer.setVisibility(View.GONE);
     }
 
     @Override
     public void closeCategories() {
-        mCategoriesLayout.setVisibility(View.GONE);
+//        mCategoriesLayout.setVisibility(View.GONE);
 //        initAnimatorSetClose();
+        initAnimatorSetClose();
     }
 
     @Override
@@ -150,7 +143,6 @@ public class ChatBottomContainerFragment extends Fragment implements ChatBottomV
         mCategoriesLayout = v.findViewById(R.id.categories_layout);
         mTextContainer = v.findViewById(R.id.text_field_container);
         mNotClientContainer = v.findViewById(R.id.not_client_container);
-        mRoot = v.findViewById(R.id.root);
         new ContentResizer().listen(getActivity());
     }
 
@@ -158,11 +150,13 @@ public class ChatBottomContainerFragment extends Fragment implements ChatBottomV
         mCategoriesWithTextContainer.setVisibility(View.VISIBLE);
         mContentContainer.setVisibility(View.VISIBLE);
         mNotClientContainer.setVisibility(View.GONE);
+        mFragment1 = ContentCategoriesFragment.newInstance(true);
+        mFragment2 = ContentCategoriesFragment.newInstance(false);
         getChildFragmentManager().beginTransaction()
-                .add(R.id.primary_categories_container, ContentCategoriesFragment.newInstance(true))
+                .add(R.id.primary_categories_container, mFragment1)
                 .commit();
         getChildFragmentManager().beginTransaction()
-                .add(R.id.secondary_categories_container, ContentCategoriesFragment.newInstance(false))
+                .add(R.id.secondary_categories_container, mFragment2)
                 .commit();
         getChildFragmentManager().beginTransaction()
                 .add(R.id.text_field_container, TextFieldFragment.newInstance())
@@ -179,15 +173,18 @@ public class ChatBottomContainerFragment extends Fragment implements ChatBottomV
         }
         ValueAnimator value = ValueAnimator.ofInt(mCategoriesLayout.getMeasuredHeight(), 0);
         value.addUpdateListener(animation -> {
-            mCategoriesLayout.postOnAnimation(() -> params.height = (int) animation.getAnimatedValue());
+            params.height = (int) animation.getAnimatedValue();
+            mCategoriesLayout.setLayoutParams(params);
+            mFragment1.notifyData();
+            mFragment2.notifyData();
         });
-
-        mAnimatorSet.setDuration(350);
+        AnimatorSet mAnimatorSet = new AnimatorSet();
+        mAnimatorSet.setDuration(200);
         mAnimatorSet.playTogether(zoomX, zoomY, alpha, value);
         mAnimatorSet.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
-
+                getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
             }
 
             @Override
@@ -218,11 +215,16 @@ public class ChatBottomContainerFragment extends Fragment implements ChatBottomV
         value.addUpdateListener(animation -> {
             params.height = (int) animation.getAnimatedValue();
             mCategoriesLayout.setLayoutParams(params);
+            mFragment1.notifyData();
+            mFragment2.notifyData();
         });
+        AnimatorSet mAnimatorSet = new AnimatorSet();
         mAnimatorSet.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
                 mCategoriesLayout.setVisibility(View.VISIBLE);
+                KeyboardUtils.hideKeyboard(getActivity());
+                getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
             }
 
             @Override
@@ -240,7 +242,7 @@ public class ChatBottomContainerFragment extends Fragment implements ChatBottomV
 
             }
         });
-        mAnimatorSet.setDuration(350);
+        mAnimatorSet.setDuration(200);
         mAnimatorSet.playTogether(zoomX, zoomY, alpha, value);
         mAnimatorSet.start();
     }

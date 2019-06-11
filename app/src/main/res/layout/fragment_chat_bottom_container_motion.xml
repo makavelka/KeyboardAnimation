@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.motion.MotionLayout
+    android:id="@+id/root"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:background="#f2f2f3"
+    app:layoutDescription="@xml/motion_scene">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/categories_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <FrameLayout
+            app:layout_constraintBottom_toTopOf="@id/separator"
+            android:id="@+id/primary_categories_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <View
+            app:layout_constraintBottom_toTopOf="@id/secondary_categories_container"
+            android:id="@+id/separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E6E6E6"/>
+
+        <FrameLayout
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/secondary_categories_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/text_field_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/categories_layout"/>
+
+
+    <!--<android.support.constraint.Group-->
+    <!--android:id="@+id/categories_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--app:constraint_referenced_ids="primary_categories_container, separator, secondary_categories_container"/>-->
+
+    <android.support.constraint.Group
+        android:id="@+id/categories_with_text_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="text_field_container"/>
+
+    <FrameLayout
+        android:id="@+id/not_client_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <FrameLayout
+        android:id="@+id/content_with_header_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent">
+    </FrameLayout>
+
+</android.support.constraint.motion.MotionLayout>

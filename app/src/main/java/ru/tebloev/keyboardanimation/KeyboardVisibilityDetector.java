@@ -13,6 +13,7 @@ public class KeyboardVisibilityDetector {
 
     static void listen(ActivityViewHolder holder, KeyboardEventListener listener) {
         Detector detector = new Detector(holder, listener);
+        holder.getNonResizableLayout().getViewTreeObserver().dispatchOnDraw();
         holder.getNonResizableLayout().getViewTreeObserver().addOnPreDrawListener(detector);
         holder.getNonResizableLayout().getViewTreeObserver().addOnGlobalLayoutListener(detector);
         holder.onDetach(() -> {
@@ -40,7 +41,7 @@ public class KeyboardVisibilityDetector {
 
         @Override
         public boolean onPreDraw() {
-//            boolean b = detect();
+            boolean b = detect();
             return true;
         }
 
@@ -79,7 +80,7 @@ public class KeyboardVisibilityDetector {
 
         @Override
         public void onGlobalLayout() {
-            detect();
+
         }
     }
 

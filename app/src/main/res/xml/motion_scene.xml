@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        motion:constraintSetEnd="@id/open_state"
+        motion:constraintSetStart="@id/close_state"
+        motion:duration="300"
+        motion:interpolator="linear">
+    </Transition>
+
+    <ConstraintSet android:id="@+id/close_state">
+
+        <Constraint
+            android:id="@id/categories_layout"
+            android:alpha="0">
+            <Layout
+                motion:layout_constraintBottom_toBottomOf="parent"/>
+        </Constraint>
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/open_state">
+
+        <Constraint
+            android:id="@id/categories_layout"
+            android:alpha="1">
+            <Layout
+                motion:layout_constraintBottom_toBottomOf="parent"
+                motion:layout_height="wrap_content"
+                motion:layout_width="fill_parent"/>
+        </Constraint>
+    </ConstraintSet>
+
+</MotionScene>

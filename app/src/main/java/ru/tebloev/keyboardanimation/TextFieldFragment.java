@@ -66,8 +66,8 @@ public class TextFieldFragment extends Fragment {
     private void initListeners() {
         mSendMessageButton.setOnClickListener(new SendMessageListener());
         mMessageEditText.setOnTouchListener((v, event) -> {
-            closeCategories();
-            return false;
+            mMessageEditText.post(() -> closeCategories());
+            return true;
         });
     }
 
@@ -79,6 +79,7 @@ public class TextFieldFragment extends Fragment {
     }
 
     private void closeCategories() {
+        KeyboardUtils.showKeyboard(getActivity(), mMessageEditText);
         if (mIsCategoriesVisible) {
             mListener.closeCategories();
             animateButton(ROTATION_END_DEGREE, ROTATION_START_DEGREE);

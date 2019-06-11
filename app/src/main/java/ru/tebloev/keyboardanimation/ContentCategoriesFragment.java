@@ -50,6 +50,10 @@ public class ContentCategoriesFragment extends Fragment {
         mChatBottomView = (ChatBottomView) getParentFragment();
     }
 
+    public void notifyData() {
+        mAdapter.notifyDataSetChanged();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
